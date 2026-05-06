@@ -17,6 +17,8 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRef, useState } from "react"
 import { DiscordIcon, MoonIcon, PaletteIcon, SunIcon } from "./svg-icons"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { DonateDialog } from "@/components/donate-dialog"
 
 interface HeaderProps {
   onSearchOpen?: () => void
@@ -223,6 +225,9 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
           )}
 
           <LocaleSwitcher />
+
+          {/* Donate */}
+          <DonateDialog />
 
           {/* Discord */}
           <Tooltip>

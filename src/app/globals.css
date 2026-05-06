@@ -21,6 +21,7 @@
   --color-fg-muted: #8a8a8f;
   --color-fg-dim: #5c5c61;
   --color-fg-faint: #3e3e42;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -345,6 +346,17 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-fg: var(--color-fg);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-dim: var(--color-fg-dim);
+  --color-fg-faint: var(--color-fg-faint);
+  --color-bg: var(--color-bg);
+  --color-bg-raise: var(--color-bg-raise);
+  --color-bg-hover: var(--color-bg-hover);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);

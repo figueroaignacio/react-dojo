@@ -1,5 +1,6 @@
 "use client"
 
+import { DonateDialog } from "@/components/donate-dialog"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { Logo } from "@/components/logo"
 import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -17,8 +18,6 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRef, useState } from "react"
 import { DiscordIcon, MoonIcon, PaletteIcon, SunIcon } from "./svg-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { DonateDialog } from "@/components/donate-dialog"
 
 interface HeaderProps {
   onSearchOpen?: () => void

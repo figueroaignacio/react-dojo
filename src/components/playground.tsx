@@ -1,24 +1,24 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCodePersistence } from "@/hooks/use-code-persistence"
+import { useEditorTheme } from "@/hooks/use-editor-theme"
+import { useTheme, type Theme } from "@/hooks/use-theme"
+import { THEME_FILE_NAME } from "@/lib/constants"
+import { type EditorThemeId } from "@/types"
+import type { ExerciseFiles } from "@/types/code-persistence"
 import {
-  SandpackProvider,
-  SandpackLayout,
   SandpackCodeEditor,
-  SandpackPreview,
   SandpackConsole,
+  SandpackLayout,
+  SandpackPreview,
+  SandpackProvider,
   useSandpack,
   type SandpackFiles,
   type SandpackPredefinedTemplate,
   type SandpackThemeProp,
 } from "@codesandbox/sandpack-react"
 import { useTranslations } from "next-intl"
-import { useTheme, type Theme } from "@/hooks/use-theme"
-import { useEditorTheme } from "@/hooks/use-editor-theme"
-import { type EditorThemeId } from "@/types"
-import { useCodePersistence } from "@/hooks/use-code-persistence"
-import type { ExerciseFiles } from "@/types/code-persistence"
-import { THEME_FILE_NAME } from "@/lib/constants"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 // ─── Editor theme definitions ────────────────────────────────────────────────
 
@@ -420,14 +420,14 @@ export function Playground({
     <div
       className={
         maximized
-          ? "fixed top-12 right-0 bottom-10 left-0 z-50 flex flex-col bg-[var(--color-bg)] p-4 md:left-[240px]"
+          ? "bg-bg fixed top-12 right-0 bottom-10 left-0 z-50 flex flex-col p-4 md:left-[240px]"
           : "relative my-2"
       }
     >
       <div className="mb-1.5 flex items-center justify-end">
         <button
           onClick={() => setMaximized((v) => !v)}
-          className="flex cursor-pointer items-center gap-1.5 text-[11px] text-[var(--color-fg-dim)] transition-colors hover:text-[var(--color-fg)]"
+          className="text-fg-dim hover:text-fg flex cursor-pointer items-center gap-1.5 text-[11px] transition-colors"
           aria-label={maximized ? t("minimizeLabel") : t("maximizeLabel")}
         >
           <span className="capitalize">{maximized ? t("minimize") : t("maximize")}</span>

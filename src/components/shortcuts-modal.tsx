@@ -1,7 +1,7 @@
 "use client"
 
-import { useTranslations } from "next-intl"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useTranslations } from "next-intl"
 
 interface ShortcutsModalProps {
   open: boolean
@@ -11,12 +11,12 @@ interface ShortcutsModalProps {
 function ShortcutRow({ keys, label }: { keys: string[]; label: string }) {
   return (
     <div className="flex items-center justify-between py-2">
-      <span className="text-[13px] text-[var(--color-fg-muted)]">{label}</span>
+      <span className="text-fg-muted text-[13px]">{label}</span>
       <div className="flex items-center gap-1">
         {keys.map((k) => (
           <kbd
             key={k}
-            className="rounded-md bg-[var(--color-bg-hover)] px-2 py-1 font-mono text-[11px] leading-none text-[var(--color-fg-muted)]"
+            className="bg-bg-hover text-fg-muted rounded-md px-2 py-1 font-mono text-[11px] leading-none"
           >
             {k}
           </kbd>
@@ -29,10 +29,10 @@ function ShortcutRow({ keys, label }: { keys: string[]; label: string }) {
 function ShortcutSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-1 text-[10px] font-semibold tracking-widest text-[var(--color-fg-faint)] uppercase">
+      <p className="text-fg-faint mb-1 text-[10px] font-semibold tracking-widest uppercase">
         {title}
       </p>
-      <div className="divide-y divide-[var(--color-line)]">{children}</div>
+      <div className="divide-line divide-y">{children}</div>
     </div>
   )
 }
@@ -42,11 +42,9 @@ export function ShortcutsModal({ open, onClose }: ShortcutsModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-sm border-[var(--color-line-strong)] bg-[var(--color-bg-raise)] p-0">
-        <DialogHeader className="border-b border-[var(--color-line)] px-5 py-4">
-          <DialogTitle className="font-mono text-[14px] text-[var(--color-fg)]">
-            {t("title")}
-          </DialogTitle>
+      <DialogContent className="border-line-strong bg-bg-raise max-w-sm p-0">
+        <DialogHeader className="border-line border-b px-5 py-4">
+          <DialogTitle className="text-fg font-mono text-[14px]">{t("title")}</DialogTitle>
         </DialogHeader>
         <div className="space-y-5 px-5 py-4">
           <ShortcutSection title={t("sectionNavigation")}>

@@ -1,13 +1,12 @@
 "use client"
 
-import React from "react"
-import { Heart, Bug } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { Separator } from "@/components/ui/separator"
-import { useContent } from "@/providers/content-provider"
 import { useProgress } from "@/hooks/use-progress"
-import { ReactIcon, GitHubIcon } from "./svg-icons"
+import { useContent } from "@/providers/content-provider"
+import { Bug, Heart } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
+import { GitHubIcon, ReactIcon } from "./svg-icons"
 
 export function Footer() {
   const t = useTranslations("Footer")
@@ -27,9 +26,9 @@ export function Footer() {
   ]
 
   return (
-    <footer className="shrink-0 border-t border-[var(--color-line)] px-4 py-3 md:px-6">
+    <footer className="border-line shrink-0 border-t px-4 py-3 md:px-6">
       {/* Mobile + tablet */}
-      <div className="flex flex-col gap-2 text-[11px] text-[var(--color-fg-faint)] lg:hidden">
+      <div className="text-fg-faint flex flex-col gap-2 text-[11px] lg:hidden">
         <span className="flex items-center justify-center gap-1 select-none">
           {t("madeWith")} <Heart className="h-[11px] w-[11px] fill-red-500 text-red-500" />{" "}
           {t("by")}{" "}
@@ -37,7 +36,7 @@ export function Footer() {
             href="https://github.com/drbarzaga"
             target="_blank"
             rel="noreferrer"
-            className="text-[var(--color-fg-dim)] underline decoration-[var(--color-fg-faint)] underline-offset-2"
+            className="text-fg-dim decoration-fg-faint underline underline-offset-2"
           >
             @drbarzaga
           </Link>
@@ -49,7 +48,7 @@ export function Footer() {
               href={href}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] px-3 py-1 text-[10px] font-semibold tracking-[0.1em] text-[var(--color-fg-muted)] uppercase"
+              className="border-line text-fg-muted flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-semibold tracking-widest uppercase"
             >
               <Icon className="h-[12px] w-[12px]" strokeWidth={1.6} />
               {label}
@@ -59,7 +58,7 @@ export function Footer() {
             href="https://github.com/drbarzaga/react-dojo"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] px-3 py-1 text-[10px] font-semibold tracking-[0.1em] text-[var(--color-fg-muted)] uppercase"
+            className="border-line text-fg-muted flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-semibold tracking-widest uppercase"
           >
             <GitHubIcon className="h-[12px] w-[12px]" />
             {t("contribute")}
@@ -68,18 +67,18 @@ export function Footer() {
       </div>
 
       {/* Desktop */}
-      <div className="relative hidden items-center justify-between text-[11px] text-[var(--color-fg-faint)] lg:flex">
+      <div className="text-fg-faint relative hidden items-center justify-between text-[11px] lg:flex">
         <div className="flex items-center gap-3">
           <span className="tabular whitespace-nowrap">
             {hasProgress && `${visitedConcepts.size}/`}
             {t("concepts", { count: allConcepts.length })}
           </span>
-          <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+          <Separator orientation="vertical" className="bg-fg-faint h-3" />
           <span className="tabular whitespace-nowrap">
             {hasProgress && `${completedExercises.size}/`}
             {t("exercises", { count: allExercises.length })}
           </span>
-          <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+          <Separator orientation="vertical" className="bg-fg-faint h-3" />
           <span className="tabular whitespace-nowrap">
             {hasProgress && `${quizzesAttempted}/`}
             {t("quizzes", { count: allQuizzes.length })}
@@ -93,7 +92,7 @@ export function Footer() {
             href="https://github.com/drbarzaga"
             target="_blank"
             rel="noreferrer"
-            className="text-[var(--color-fg-dim)] underline decoration-[var(--color-fg-faint)] underline-offset-2 transition-colors hover:text-[var(--color-fg-muted)]"
+            className="text-fg-dim decoration-fg-faint hover:text-fg-muted underline underline-offset-2 transition-colors"
           >
             @drbarzaga
           </Link>
@@ -106,7 +105,7 @@ export function Footer() {
               href={href}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] px-3 py-1 text-[10px] font-semibold tracking-[0.1em] text-[var(--color-fg-muted)] uppercase transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+              className="border-line text-fg-muted hover:border-fg-muted hover:text-fg flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-semibold tracking-widest uppercase transition-colors"
             >
               <Icon className="h-[12px] w-[12px]" strokeWidth={1.6} />
               {label}
@@ -116,7 +115,7 @@ export function Footer() {
             href="https://github.com/drbarzaga/react-dojo"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] px-3 py-1 text-[10px] font-semibold tracking-[0.1em] text-[var(--color-fg-muted)] uppercase transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+            className="border-line text-fg-muted hover:border-fg-muted hover:text-fg flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-semibold tracking-widest uppercase transition-colors"
           >
             <GitHubIcon className="h-[12px] w-[12px]" />
             {t("contribute")}

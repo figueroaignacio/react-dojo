@@ -1,6 +1,16 @@
 "use client"
 
+import { GitHubIcon } from "@/components/svg-icons"
+import { Sidebar as ShadcnSidebar, SidebarContent, SidebarFooter } from "@/components/ui/sidebar"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { type Difficulty } from "@/content/exercises"
+import { type QuizDifficulty } from "@/content/quiz"
+import { useLocaleRouter } from "@/hooks/use-locale-router"
+import { useProgress } from "@/hooks/use-progress"
+import { authClient, useSession } from "@/lib/auth-client"
+import { useContent } from "@/providers/content-provider"
 import {
+  Anchor,
   Boxes,
   Check,
   ChevronDown,
@@ -11,22 +21,12 @@ import {
   MessageCircleQuestion,
   RefreshCw,
   Users,
-  Anchor,
 } from "lucide-react"
-import type { ComponentType } from "react"
-import { useState, useEffect } from "react"
-import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { Sidebar as ShadcnSidebar, SidebarContent, SidebarFooter } from "@/components/ui/sidebar"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useContent } from "@/providers/content-provider"
-import { type Difficulty } from "@/content/exercises"
-import { type QuizDifficulty } from "@/content/quiz"
-import { useProgress } from "@/hooks/use-progress"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
-import { authClient, useSession } from "@/lib/auth-client"
-import { GitHubIcon } from "@/components/svg-icons"
+import { usePathname } from "next/navigation"
+import type { ComponentType } from "react"
+import { useEffect, useState } from "react"
 
 type IconC = ComponentType<{ className?: string; strokeWidth?: number }>
 
@@ -267,7 +267,7 @@ export function Sidebar() {
                         strokeWidth={2}
                       />
                     )}
-                    <span className="text-sidebar-foreground/45 group-hover/cat:text-sidebar-foreground/65 flex-1 truncate text-left font-mono text-[11px] font-semibold tracking-[0.1em] uppercase">
+                    <span className="text-sidebar-foreground/45 group-hover/cat:text-sidebar-foreground/65 flex-1 truncate text-left font-mono text-[11px] font-semibold tracking-widest uppercase">
                       {cat.title}
                     </span>
                     {visited > 0 && visited < total && (
@@ -356,7 +356,7 @@ export function Sidebar() {
                     <span
                       className={`h-[6px] w-[6px] shrink-0 rounded-full ${difficultyDot[level]}`}
                     />
-                    <span className="text-sidebar-foreground/50 group-hover/level:text-sidebar-foreground/70 flex-1 text-left font-mono text-[11px] font-semibold tracking-[0.1em] uppercase">
+                    <span className="text-sidebar-foreground/50 group-hover/level:text-sidebar-foreground/70 flex-1 text-left font-mono text-[11px] font-semibold tracking-widest uppercase">
                       {difficultyLabel[level]}
                     </span>
                     <ChevronDown
@@ -431,7 +431,7 @@ export function Sidebar() {
                     <span
                       className={`h-[6px] w-[6px] shrink-0 rounded-full ${difficultyDot[level as QuizDifficulty]}`}
                     />
-                    <span className="text-sidebar-foreground/50 group-hover/qlevel:text-sidebar-foreground/70 flex-1 text-left font-mono text-[11px] font-semibold tracking-[0.1em] uppercase">
+                    <span className="text-sidebar-foreground/50 group-hover/qlevel:text-sidebar-foreground/70 flex-1 text-left font-mono text-[11px] font-semibold tracking-widest uppercase">
                       {difficultyLabel[level as QuizDifficulty]}
                     </span>
                     <ChevronDown
@@ -473,7 +473,7 @@ export function Sidebar() {
           <button
             type="button"
             onClick={() => push("/hooks")}
-            className="text-sidebar-foreground/40 hover:text-sidebar-foreground/70 mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors hover:bg-[var(--color-bg-hover)]"
+            className="text-sidebar-foreground/40 hover:text-sidebar-foreground/70 hover:bg-bg-hover mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors"
           >
             <Anchor className="h-[11px] w-[11px] shrink-0" strokeWidth={1.8} />
             <span className="truncate">{t("customHooks")}</span>
@@ -484,7 +484,7 @@ export function Sidebar() {
           <button
             type="button"
             onClick={() => push("/directory")}
-            className="text-sidebar-foreground/40 hover:text-sidebar-foreground/70 mb-2 flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors hover:bg-[var(--color-bg-hover)]"
+            className="text-sidebar-foreground/40 hover:text-sidebar-foreground/70 hover:bg-bg-hover mb-2 flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors"
           >
             <Users className="h-[11px] w-[11px] shrink-0" strokeWidth={1.8} />
             <span className="truncate">{t("directory")}</span>

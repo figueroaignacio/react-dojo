@@ -1,8 +1,8 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
-import { useLocale } from "next-intl"
 import { routing } from "@/i18n/routing"
+import { useLocale } from "next-intl"
+import { usePathname, useRouter } from "next/navigation"
 
 export function LocaleSwitcher() {
   const locale = useLocale()
@@ -18,7 +18,7 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-0.5 rounded-md border border-[var(--color-line)] p-0.5">
+    <div className="border-line flex items-center gap-0.5 rounded-md border p-0.5">
       {routing.locales.map((l) => (
         <button
           key={l}
@@ -26,9 +26,7 @@ export function LocaleSwitcher() {
           onClick={() => switchLocale(l)}
           className={[
             "rounded px-2 py-0.5 font-mono text-[11px] uppercase transition-colors",
-            l === locale
-              ? "bg-[var(--color-fg)] text-[var(--color-bg)]"
-              : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
+            l === locale ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
           ].join(" ")}
         >
           {l}

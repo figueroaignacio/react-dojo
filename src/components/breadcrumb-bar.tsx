@@ -1,8 +1,5 @@
 "use client"
 
-import { usePathname } from "next/navigation"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
-import { useContent } from "@/providers/content-provider"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +8,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { routing } from "@/i18n/routing"
+import { useContent } from "@/providers/content-provider"
+import { usePathname } from "next/navigation"
 
 function stripLocale(pathname: string) {
   for (const locale of routing.locales) {
@@ -54,12 +54,12 @@ export function BreadcrumbBar() {
   }
 
   return (
-    <div className="shrink-0 border-b border-[var(--color-line)] bg-[var(--color-bg)] px-4 py-2 md:px-6">
+    <div className="border-line bg-bg shrink-0 border-b px-4 py-2 md:px-6">
       <Breadcrumb>
         <BreadcrumbList className="gap-1 text-[11px] sm:gap-1">
           {items.map((item, i) => (
             <span key={i} className="flex items-center gap-1">
-              {i > 0 && <BreadcrumbSeparator className="text-[var(--color-fg-faint)]" />}
+              {i > 0 && <BreadcrumbSeparator className="text-fg-faint" />}
               <BreadcrumbItem>
                 {item.href ? (
                   <BreadcrumbLink
@@ -72,14 +72,12 @@ export function BreadcrumbBar() {
                         }}
                       />
                     }
-                    className="text-[var(--color-fg-faint)] transition-colors hover:text-[var(--color-fg-muted)]"
+                    className="text-fg-faint hover:text-fg-muted transition-colors"
                   >
                     {item.label}
                   </BreadcrumbLink>
                 ) : (
-                  <BreadcrumbPage className="font-mono text-[var(--color-fg-muted)]">
-                    {item.label}
-                  </BreadcrumbPage>
+                  <BreadcrumbPage className="text-fg-muted font-mono">{item.label}</BreadcrumbPage>
                 )}
               </BreadcrumbItem>
             </span>

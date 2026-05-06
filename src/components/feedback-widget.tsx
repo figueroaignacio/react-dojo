@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { useTranslations } from "next-intl"
-import { Loader2 } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Textarea } from "@/components/ui/textarea"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useEffect, useRef, useState } from "react"
 
 import { REACTION_SLUGS } from "@/db/schema"
 
@@ -65,11 +65,9 @@ export function FeedbackWidget({ contentType, contentId }: FeedbackWidgetProps) 
 
   return (
     <div className="mt-12 flex justify-center">
-      <div className="w-full max-w-sm overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-bg)]">
+      <div className="border-line bg-bg w-full max-w-sm overflow-hidden rounded-xl border">
         <div className="flex items-center justify-center gap-1 px-5 py-3">
-          <span className="mr-2 shrink-0 text-[13px] text-[var(--color-fg-muted)]">
-            {t("label")}
-          </span>
+          <span className="text-fg-muted mr-2 shrink-0 text-[13px]">{t("label")}</span>
           <TooltipProvider delay={300}>
             {REACTION_EMOJIS.map((emoji, i) => {
               const slug = REACTION_SLUGS[i]
@@ -88,10 +86,10 @@ export function FeedbackWidget({ contentType, contentId }: FeedbackWidgetProps) 
                           "flex h-9 w-9 items-center justify-center rounded-full transition-all duration-150",
                           confirming ? "cursor-default" : "cursor-pointer",
                           isSelected
-                            ? "scale-110 bg-[var(--color-bg-hover)]"
+                            ? "bg-bg-hover scale-110"
                             : confirming
                               ? ""
-                              : "hover:scale-110 hover:bg-[var(--color-bg-hover)]",
+                              : "hover:bg-bg-hover hover:scale-110",
                         ].join(" ")}
                       >
                         <span className="text-[20px] leading-none select-none">{emoji}</span>
@@ -108,7 +106,7 @@ export function FeedbackWidget({ contentType, contentId }: FeedbackWidgetProps) 
         </div>
 
         {confirming && (
-          <div className="flex flex-col items-center gap-2 border-t border-[var(--color-line)] px-4 py-6 text-center">
+          <div className="border-line flex flex-col items-center gap-2 border-t px-4 py-6 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500">
               <svg
                 className="h-5 w-5 text-white"
@@ -120,28 +118,28 @@ export function FeedbackWidget({ contentType, contentId }: FeedbackWidgetProps) 
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-[13px] font-medium text-[var(--color-fg)]">{t("confirmed")}</p>
-            <p className="text-[12px] text-[var(--color-fg-muted)]">{t("confirmedSub")}</p>
+            <p className="text-fg text-[13px] font-medium">{t("confirmed")}</p>
+            <p className="text-fg-muted text-[12px]">{t("confirmedSub")}</p>
           </div>
         )}
 
         {reaction !== null && !confirming && (
           <>
-            <div className="border-t border-[var(--color-line)] p-3">
+            <div className="border-line border-t p-3">
               <Textarea
                 ref={textareaRef}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder={t("placeholder")}
                 rows={3}
-                className="resize-none text-[14px] focus-visible:border-[var(--color-line-strong)] focus-visible:ring-0"
+                className="focus-visible:border-line-strong resize-none text-[14px] focus-visible:ring-0"
               />
             </div>
-            <div className="flex justify-end border-t border-[var(--color-line)] px-4 py-2">
+            <div className="border-line flex justify-end border-t px-4 py-2">
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="rounded-md bg-[var(--color-fg)] px-4 py-1.5 text-[13px] font-medium text-[var(--color-bg)] transition-opacity hover:opacity-80 disabled:opacity-50"
+                className="bg-fg text-bg rounded-md px-4 py-1.5 text-[13px] font-medium transition-opacity hover:opacity-80 disabled:opacity-50"
               >
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t("send")}
               </button>

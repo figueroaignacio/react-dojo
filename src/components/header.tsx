@@ -1,22 +1,22 @@
 "use client"
 
-import Link from "next/link"
-import { useRef, useState } from "react"
-import { Keyboard, Search, Star } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useTheme } from "@/hooks/use-theme"
+import { LocaleSwitcher } from "@/components/locale-switcher"
+import { Logo } from "@/components/logo"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { useCountUp } from "@/hooks/use-count-up"
 import { useEditorTheme } from "@/hooks/use-editor-theme"
 import { useGitHubStars } from "@/hooks/use-github-stars"
-import { useCountUp } from "@/hooks/use-count-up"
-import { Logo } from "@/components/logo"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useLocaleRouter } from "@/hooks/use-locale-router"
-import { type EditorThemeId } from "@/types"
-import { DISCORD_URL, EDITOR_THEMES_META, REPOSITORY, STARS_KILO_THRESHOLD } from "@/lib/constants"
-import { DiscordIcon, MoonIcon, PaletteIcon, SunIcon } from "./svg-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTheme } from "@/hooks/use-theme"
+import { DISCORD_URL, EDITOR_THEMES_META, REPOSITORY, STARS_KILO_THRESHOLD } from "@/lib/constants"
+import { type EditorThemeId } from "@/types"
+import { Keyboard, Search, Star } from "lucide-react"
+import { useTranslations } from "next-intl"
+import Link from "next/link"
+import { useRef, useState } from "react"
+import { DiscordIcon, MoonIcon, PaletteIcon, SunIcon } from "./svg-icons"
 
 interface HeaderProps {
   onSearchOpen?: () => void
@@ -47,13 +47,13 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
 
   return (
     <TooltipProvider delay={400}>
-      <header className="relative z-20 flex h-12 shrink-0 items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-bg)] px-3 md:px-6">
+      <header className="border-line bg-bg relative z-20 flex h-12 shrink-0 items-center justify-between border-b px-3 md:px-6">
         {/* Left — logo */}
         <div className="flex items-center gap-2">
-          <SidebarTrigger className="text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)] md:hidden" />
+          <SidebarTrigger className="text-fg-muted hover:bg-bg-hover hover:text-fg md:hidden" />
           <Link
             href={href("/")}
-            className="flex items-center gap-2 text-[14px] text-[var(--color-fg)] transition-colors hover:text-[var(--color-fg-muted)]"
+            className="text-fg hover:text-fg-muted flex items-center gap-2 text-[14px] transition-colors"
           >
             <Logo className="h-[28px] w-auto" />
             <span className="hidden font-mono sm:inline">React Dojo</span>
@@ -67,7 +67,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
             type="button"
             onClick={onSearchOpen}
             aria-label={t("search")}
-            className="grid h-7 w-7 place-items-center rounded-md text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)] sm:hidden"
+            className="text-fg-muted hover:bg-bg-hover hover:text-fg grid h-7 w-7 place-items-center rounded-md transition-colors sm:hidden"
           >
             <Search className="h-[15px] w-[15px]" strokeWidth={1.8} />
           </button>
@@ -76,7 +76,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
           <button
             type="button"
             onClick={onSearchOpen}
-            className="hidden w-52 items-center gap-2 rounded-lg py-1.5 pr-2 pl-3 text-[12px] text-[var(--color-fg-dim)] transition-all hover:text-[var(--color-fg-muted)] sm:flex"
+            className="text-fg-dim hover:text-fg-muted hidden w-52 items-center gap-2 rounded-lg py-1.5 pr-2 pl-3 text-[12px] transition-all sm:flex"
             style={
               theme === "light"
                 ? { background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.1)" }
@@ -92,7 +92,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
               {["⌘", "K"].map((k) => (
                 <kbd
                   key={k}
-                  className="rounded border border-[var(--color-line-strong)] bg-[var(--color-bg-hover)] px-1.5 py-0.5 font-mono text-[10px] leading-none text-[var(--color-fg-muted)]"
+                  className="border-line-strong bg-bg-hover text-fg-muted rounded border px-1.5 py-0.5 font-mono text-[10px] leading-none"
                 >
                   {k}
                 </kbd>
@@ -109,7 +109,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                     href={`https://github.com/${REPOSITORY}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex h-7 items-center gap-1.5 rounded-md px-2 text-[12px] text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)]"
+                    className="text-fg-muted hover:bg-bg-hover hover:text-fg flex h-7 items-center gap-1.5 rounded-md px-2 text-[12px] transition-colors"
                   >
                     <Star className="star-animate h-[15px] w-[15px] fill-yellow-400 text-yellow-400" />
                     <span className="font-mono">
@@ -133,7 +133,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                     type="button"
                     onClick={() => setPickerOpen((v) => !v)}
                     aria-label={t("editorTheme")}
-                    className="grid h-7 w-7 cursor-pointer place-items-center rounded-md text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)]"
+                    className="text-fg-muted hover:bg-bg-hover hover:text-fg grid h-7 w-7 cursor-pointer place-items-center rounded-md transition-colors"
                   >
                     <PaletteIcon className="h-[15px] w-[15px]" />
                   </button>
@@ -143,7 +143,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
             </Tooltip>
 
             {pickerOpen && (
-              <div className="absolute top-full right-0 z-50 mt-2 w-[186px] rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-raise)] p-1.5 shadow-lg">
+              <div className="border-line bg-bg-raise absolute top-full right-0 z-50 mt-2 w-[186px] rounded-lg border p-1.5 shadow-lg">
                 {(
                   Object.entries(EDITOR_THEMES_META) as [
                     EditorThemeId,
@@ -154,7 +154,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                     key={id}
                     type="button"
                     onClick={() => selectTheme(id)}
-                    className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-[var(--color-bg-hover)]"
+                    className="hover:bg-bg-hover flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors"
                   >
                     <span
                       className="flex h-5 w-8 shrink-0 items-center gap-[3px] overflow-hidden rounded px-1"
@@ -169,12 +169,12 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                       ))}
                     </span>
                     <span
-                      className={`text-[13px] ${editorTheme === id ? "text-[var(--color-fg)]" : "text-[var(--color-fg-muted)]"}`}
+                      className={`text-[13px] ${editorTheme === id ? "text-fg" : "text-fg-muted"}`}
                     >
                       {meta.label}
                     </span>
                     {editorTheme === id && (
-                      <span className="ml-auto text-[10px] text-[var(--color-fg-dim)]">✓</span>
+                      <span className="text-fg-dim ml-auto text-[10px]">✓</span>
                     )}
                   </button>
                 ))}
@@ -190,7 +190,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                   type="button"
                   onClick={toggle}
                   aria-label={theme === "dark" ? t("switchToLight") : t("switchToDark")}
-                  className="grid h-7 w-7 cursor-pointer place-items-center rounded-md text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)]"
+                  className="text-fg-muted hover:bg-bg-hover hover:text-fg grid h-7 w-7 cursor-pointer place-items-center rounded-md transition-colors"
                 >
                   {theme === "dark" ? (
                     <SunIcon className="h-[15px] w-[15px]" />
@@ -212,7 +212,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                     type="button"
                     onClick={onShortcutsOpen}
                     aria-label="Keyboard shortcuts"
-                    className="grid h-7 w-7 place-items-center rounded-md text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)]"
+                    className="text-fg-muted hover:bg-bg-hover hover:text-fg grid h-7 w-7 place-items-center rounded-md transition-colors"
                   >
                     <Keyboard className="h-[15px] w-[15px]" strokeWidth={1.8} />
                   </button>
@@ -233,7 +233,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={t("joinDiscord")}
-                  className="discord-glow grid h-7 w-7 place-items-center rounded-md text-[#5865F2] transition-colors hover:bg-[var(--color-bg-hover)]"
+                  className="discord-glow hover:bg-bg-hover grid h-7 w-7 place-items-center rounded-md text-[#5865F2] transition-colors"
                 >
                   <DiscordIcon className="h-[16px] w-[16px]" />
                 </a>

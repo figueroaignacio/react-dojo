@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
 import { Info, X } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useEffect, useRef, useState } from "react"
 
 const RANKS = [
   { label: "DAN", range: "100", color: "text-yellow-400" },
@@ -35,7 +35,7 @@ export function KyuInfoButton() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1 rounded-md px-1.5 py-1 text-[var(--color-fg-dim)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-muted)]"
+        className="text-fg-dim hover:bg-bg-hover hover:text-fg-muted flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors"
         aria-label={t("kyuInfoTitle")}
       >
         <Info className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -43,44 +43,36 @@ export function KyuInfoButton() {
       </button>
 
       {open && (
-        <div className="absolute top-full right-0 z-50 mt-2 w-72 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-raise)] p-4 shadow-xl">
+        <div className="border-line bg-bg-raise absolute top-full right-0 z-50 mt-2 w-72 rounded-xl border p-4 shadow-xl">
           <div className="mb-3 flex items-start justify-between gap-2">
             <div>
-              <p className="font-mono text-[13px] font-semibold text-[var(--color-fg)]">
-                {t("kyuInfoTitle")}
-              </p>
-              <p className="mt-0.5 text-[11px] text-[var(--color-fg-dim)]">{t("kyuInfoDesc")}</p>
+              <p className="text-fg font-mono text-[13px] font-semibold">{t("kyuInfoTitle")}</p>
+              <p className="text-fg-dim mt-0.5 text-[11px]">{t("kyuInfoDesc")}</p>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="shrink-0 text-[var(--color-fg-dim)] hover:text-[var(--color-fg-muted)]"
+              className="text-fg-dim hover:text-fg-muted shrink-0"
             >
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
 
-          <div className="mb-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)] px-3 py-2.5">
-            <p className="mb-1.5 font-mono text-[10px] font-semibold tracking-widest text-[var(--color-fg-dim)] uppercase">
+          <div className="border-line bg-bg mb-3 rounded-lg border px-3 py-2.5">
+            <p className="text-fg-dim mb-1.5 font-mono text-[10px] font-semibold tracking-widest uppercase">
               {t("kyuInfoFormula")}
             </p>
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-[var(--color-fg-muted)]">
-                  {t("kyuInfoConcepts")}
-                </span>
+                <span className="text-fg-muted text-[11px]">{t("kyuInfoConcepts")}</span>
                 <span className="font-mono text-[11px] font-semibold text-blue-400">50%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-[var(--color-fg-muted)]">
-                  {t("kyuInfoExercises")}
-                </span>
+                <span className="text-fg-muted text-[11px]">{t("kyuInfoExercises")}</span>
                 <span className="font-mono text-[11px] font-semibold text-emerald-400">30%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-[var(--color-fg-muted)]">
-                  {t("kyuInfoQuizzes")}
-                </span>
+                <span className="text-fg-muted text-[11px]">{t("kyuInfoQuizzes")}</span>
                 <span className="font-mono text-[11px] font-semibold text-amber-400">20%</span>
               </div>
             </div>
@@ -90,7 +82,7 @@ export function KyuInfoButton() {
             {RANKS.map((r) => (
               <div key={r.label} className="flex items-center justify-between">
                 <span className={`font-mono text-[11px] font-semibold ${r.color}`}>{r.label}</span>
-                <span className="font-mono text-[10px] text-[var(--color-fg-dim)]">{r.range}</span>
+                <span className="text-fg-dim font-mono text-[10px]">{r.range}</span>
               </div>
             ))}
           </div>

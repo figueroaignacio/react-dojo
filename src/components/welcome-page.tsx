@@ -1,15 +1,15 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useTranslations } from "next-intl"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ArrowRight, Dumbbell, Shuffle } from "lucide-react"
-import { useContent } from "@/providers/content-provider"
+import { Separator } from "@/components/ui/separator"
 import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useProgress } from "@/hooks/use-progress"
+import { useContent } from "@/providers/content-provider"
+import { ArrowRight, Dumbbell, Shuffle } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useEffect, useState } from "react"
 
 export function WelcomePage() {
   const t = useTranslations("WelcomePage")
@@ -65,15 +65,11 @@ export function WelcomePage() {
       <div className="flex max-w-[420px] flex-col items-center text-center">
         <Logo className="mb-6 h-24 w-auto" />
 
-        <h1 className="font-mono text-[30px] leading-none font-medium text-[var(--color-fg)]">
-          React Dojo
-        </h1>
+        <h1 className="text-fg font-mono text-[30px] leading-none font-medium">React Dojo</h1>
 
-        <p className="mt-4 text-[16px] leading-[1.7] text-[var(--color-fg-muted)]">
-          {t("tagline")}
-        </p>
+        <p className="text-fg-muted mt-4 text-[16px] leading-[1.7]">{t("tagline")}</p>
 
-        <div className="mt-6 flex items-center gap-4 text-[12px] text-[var(--color-fg-dim)]">
+        <div className="text-fg-dim mt-6 flex items-center gap-4 text-[12px]">
           {hasProgress ? (
             <>
               <span>
@@ -82,14 +78,14 @@ export function WelcomePage() {
                   total: allConcepts.length,
                 })}
               </span>
-              <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+              <Separator orientation="vertical" className="bg-fg-faint h-3" />
               <span>
                 {t("exercisesProgress", {
                   completed: completedExercises.size,
                   total: allExercises.length,
                 })}
               </span>
-              <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+              <Separator orientation="vertical" className="bg-fg-faint h-3" />
               <span>
                 {t("quizzesProgress", { attempted: quizzesAttempted, total: allQuizzes.length })}
               </span>
@@ -97,9 +93,9 @@ export function WelcomePage() {
           ) : (
             <>
               <span>{t("concepts", { count: allConcepts.length })}</span>
-              <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+              <Separator orientation="vertical" className="bg-fg-faint h-3" />
               <span>{t("exercises", { count: allExercises.length })}</span>
-              <Separator orientation="vertical" className="h-3 bg-[var(--color-fg-faint)]" />
+              <Separator orientation="vertical" className="bg-fg-faint h-3" />
               <span>{t("categories", { count: categories.length })}</span>
             </>
           )}
@@ -107,17 +103,14 @@ export function WelcomePage() {
 
         <div className="mt-8 flex flex-col items-center gap-3">
           <div className="flex flex-wrap justify-center gap-3">
-            <Button
-              onClick={goContinue}
-              className="gap-2 border-0 bg-[var(--color-fg)] text-[var(--color-bg)] hover:opacity-80"
-            >
+            <Button onClick={goContinue} className="bg-fg text-bg gap-2 border-0 hover:opacity-80">
               {hasProgress ? t("continue") : t("start")}
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
             </Button>
             <Button
               variant="outline"
               onClick={goPractice}
-              className="gap-2 border-[var(--color-line-strong)] bg-transparent text-[var(--color-fg-muted)] hover:border-[var(--color-fg)] hover:text-[var(--color-fg)]"
+              className="border-line-strong text-fg-muted hover:border-fg hover:text-fg gap-2 bg-transparent"
             >
               <Dumbbell className="h-3.5 w-3.5" strokeWidth={1.8} />
               {t("practice")}
@@ -125,7 +118,7 @@ export function WelcomePage() {
             <Button
               variant="outline"
               onClick={goSurprise}
-              className="btn-shimmer gap-2 border-[var(--color-line-strong)] bg-transparent text-[var(--color-fg-muted)] hover:border-[var(--color-fg)] hover:text-[var(--color-fg)]"
+              className="btn-shimmer border-line-strong text-fg-muted hover:border-fg hover:text-fg gap-2 bg-transparent"
             >
               <Shuffle className="h-3.5 w-3.5" strokeWidth={1.8} />
               {t("surprise")}
@@ -136,7 +129,7 @@ export function WelcomePage() {
             <button
               type="button"
               onClick={() => setResetOpen(true)}
-              className="text-[11px] text-[var(--color-fg-faint)] transition-colors hover:text-[var(--color-fg-muted)]"
+              className="text-fg-faint hover:text-fg-muted text-[11px] transition-colors"
             >
               {t("resetProgress")}
             </button>
@@ -145,21 +138,17 @@ export function WelcomePage() {
       </div>
 
       <Dialog open={resetOpen} onOpenChange={(o) => !o && setResetOpen(false)}>
-        <DialogContent className="max-w-sm border-[var(--color-line-strong)] bg-[var(--color-bg-raise)] p-0">
-          <DialogHeader className="border-b border-[var(--color-line)] px-5 py-4">
-            <DialogTitle className="font-mono text-[14px] text-[var(--color-fg)]">
-              {t("resetTitle")}
-            </DialogTitle>
+        <DialogContent className="border-line-strong bg-bg-raise max-w-sm p-0">
+          <DialogHeader className="border-line border-b px-5 py-4">
+            <DialogTitle className="text-fg font-mono text-[14px]">{t("resetTitle")}</DialogTitle>
           </DialogHeader>
           <div className="px-5 py-4">
-            <p className="text-[13px] leading-relaxed text-[var(--color-fg-muted)]">
-              {t("resetBody")}
-            </p>
+            <p className="text-fg-muted text-[13px] leading-relaxed">{t("resetBody")}</p>
             <div className="mt-5 flex justify-end gap-2">
               <Button
                 variant="outline"
                 onClick={() => setResetOpen(false)}
-                className="border-[var(--color-line-strong)] bg-transparent text-[var(--color-fg-muted)] hover:border-[var(--color-fg)] hover:text-[var(--color-fg)]"
+                className="border-line-strong text-fg-muted hover:border-fg hover:text-fg bg-transparent"
               >
                 {t("resetCancel")}
               </Button>

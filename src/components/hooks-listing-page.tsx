@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
-import { ExternalLink, GitBranch, GitFork, Plus, Star } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import type { CustomHook, HookCategory } from "@/content/custom-hooks"
+import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { REPOSITORY } from "@/lib/constants"
+import { ExternalLink, GitBranch, GitFork, Plus, Star } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useState } from "react"
 
 const categoryColors: Record<HookCategory, string> = {
   state: "bg-blue-400/10 text-blue-400 border-blue-400/20",
@@ -41,21 +41,19 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
       {/* Header */}
       <div className="mb-10 flex items-start justify-between gap-6">
         <div>
-          <div className="mb-3 flex items-center gap-3 text-[11px] tracking-[0.14em] text-[var(--color-fg-dim)] uppercase">
+          <div className="text-fg-dim mb-3 flex items-center gap-3 text-[11px] tracking-[0.14em] uppercase">
             <span>{t("sectionLabel")}</span>
-            <span className="h-px w-4 bg-[var(--color-fg-faint)]" />
+            <span className="bg-fg-faint h-px w-4" />
             <span>{t("hookCount", { count: hooks.length })}</span>
           </div>
-          <h1 className="font-mono text-[32px] leading-none font-medium text-[var(--color-fg)]">
-            {t("title")}
-          </h1>
-          <p className="mt-4 max-w-lg text-[16px] leading-[1.65] text-[var(--color-fg-muted)]">
+          <h1 className="text-fg font-mono text-[32px] leading-none font-medium">{t("title")}</h1>
+          <p className="text-fg-muted mt-4 max-w-lg text-[16px] leading-[1.65]">
             {t("description")}
           </p>
         </div>
         <button
           onClick={() => setAddOpen(true)}
-          className="flex shrink-0 cursor-pointer items-center gap-2 rounded-md border border-[var(--color-line)] px-4 py-2 font-mono text-[12px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-line-strong)] hover:text-[var(--color-fg)]"
+          className="text-fg-muted hover:border-fg-strong hover:text-fg border-line flex cursor-pointer items-center gap-2 rounded-md border px-4 py-2 font-mono text-[12px] transition-colors"
         >
           <Plus className="h-[13px] w-[13px]" strokeWidth={2} />
           {t("addHook")}
@@ -69,10 +67,10 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
             className={[
-              "rounded-md border px-3 py-1.5 font-mono text-[12px] transition-colors",
+              "border-line rounded-md border px-3 py-1.5 font-mono text-[12px] transition-colors",
               activeCategory === cat.id
-                ? "border-[var(--color-line-strong)] bg-[var(--color-bg-raise)] text-[var(--color-fg)]"
-                : "border-[var(--color-line)] text-[var(--color-fg-dim)] hover:border-[var(--color-line-strong)] hover:text-[var(--color-fg-muted)]",
+                ? "border-fg-strong bg-bg-raise text-fg"
+                : "border-line text-fg-dim hover:border-fg-strong hover:text-fg-muted",
             ].join(" ")}
           >
             {cat.label}
@@ -86,24 +84,22 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
           <button
             key={hook.id}
             onClick={() => push(`/hooks/${hook.id}`)}
-            className="group flex cursor-pointer flex-col gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)] p-5 text-left transition-all hover:border-[var(--color-line-strong)] hover:shadow-sm"
+            className="border-line hover:border-fg-strong bg-bg flex cursor-pointer flex-col gap-3 rounded-lg border p-5 text-left transition-all hover:shadow-sm"
           >
             <div className="flex items-center justify-between">
               <span
-                className={`rounded border px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider uppercase ${categoryColors[hook.category]}`}
+                className={`border-line rounded border px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider uppercase ${categoryColors[hook.category]}`}
               >
                 {hook.category}
               </span>
             </div>
             <div>
-              <h2 className="font-mono text-[15px] font-medium text-[var(--color-fg)] transition-colors group-hover:text-[var(--color-fg)]">
+              <h2 className="text-fg group-hover:text-fg font-mono text-[15px] font-medium transition-colors">
                 {hook.label}
               </h2>
-              <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--color-fg-muted)]">
-                {hook.description}
-              </p>
+              <p className="text-fg-muted mt-1.5 text-[13px] leading-[1.6]">{hook.description}</p>
             </div>
-            <span className="mt-auto text-[11px] text-[var(--color-fg-dim)] transition-colors group-hover:text-[var(--color-fg-muted)]">
+            <span className="text-fg-dim group-hover:text-fg-muted mt-auto text-[11px] transition-colors">
               {t("viewHook")} →
             </span>
           </button>
@@ -111,8 +107,8 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="rounded-lg border border-[var(--color-line)] px-6 py-16 text-center">
-          <p className="text-[13px] text-[var(--color-fg-dim)]">{t("noHooks")}</p>
+        <div className="border-line rounded-lg border px-6 py-16 text-center">
+          <p className="text-fg-dim text-[13px]">{t("noHooks")}</p>
         </div>
       )}
 
@@ -163,13 +159,11 @@ function AddHookDialog({ open, onClose }: { open: boolean; onClose: () => void }
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md gap-0 overflow-hidden p-0">
         {/* Header */}
-        <div className="border-b border-[var(--color-line)] px-6 pt-6 pb-5">
-          <DialogTitle className="text-[17px] leading-none font-semibold text-[var(--color-fg)]">
+        <div className="border-line border-b px-6 pt-6 pb-5">
+          <DialogTitle className="text-fg text-[17px] leading-none font-semibold">
             {t("dialogTitle")}
           </DialogTitle>
-          <p className="mt-2 text-[13px] leading-[1.55] text-[var(--color-fg-muted)]">
-            {t("dialogSubtitle")}
-          </p>
+          <p className="text-fg-muted mt-2 text-[13px] leading-[1.55]">{t("dialogSubtitle")}</p>
         </div>
 
         {/* Steps — vertical timeline */}
@@ -187,10 +181,7 @@ function AddHookDialog({ open, onClose }: { open: boolean; onClose: () => void }
                     <Icon className={`h-[15px] w-[15px] ${step.accent}`} strokeWidth={1.7} />
                   </div>
                   {!isLast && (
-                    <div
-                      className="mt-1 mb-1 w-px flex-1 bg-[var(--color-line)]"
-                      style={{ minHeight: 20 }}
-                    />
+                    <div className="bg-line mt-1 mb-1 w-px flex-1" style={{ minHeight: 20 }} />
                   )}
                 </div>
 
@@ -202,18 +193,16 @@ function AddHookDialog({ open, onClose }: { open: boolean; onClose: () => void }
                     >
                       {step.number}
                     </span>
-                    <h3 className="text-[13px] font-semibold text-[var(--color-fg)]">
-                      {step.title}
-                    </h3>
+                    <h3 className="text-fg text-[13px] font-semibold">{step.title}</h3>
                   </div>
-                  <p className="mb-2.5 text-[12px] leading-[1.65] text-[var(--color-fg-muted)]">
+                  <p className="text-fg-muted mb-2.5 text-[12px] leading-[1.65]">
                     {step.description}
                   </p>
                   <a
                     href={step.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-line)] bg-[var(--color-bg-raise)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-line-strong)] hover:text-[var(--color-fg)]"
+                    className="border-line bg-bg-raise text-fg-muted hover:border-line-strong hover:text-fg inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors"
                   >
                     {step.linkText}
                     <ExternalLink className="h-[9px] w-[9px] opacity-60" strokeWidth={2} />
@@ -225,9 +214,9 @@ function AddHookDialog({ open, onClose }: { open: boolean; onClose: () => void }
         </div>
 
         {/* Footer */}
-        <div className="mx-6 mb-5 flex items-center gap-2 rounded-md border border-[var(--color-line)] bg-[var(--color-bg-raise)] px-3 py-2">
-          <span className="shrink-0 text-[10px] text-[var(--color-fg-dim)]">{t("dialogNote")}</span>
-          <code className="truncate font-mono text-[10px] text-[var(--color-fg-muted)]">
+        <div className="border-line bg-bg-raise mx-6 mb-5 flex items-center gap-2 rounded-md border px-3 py-2">
+          <span className="text-fg-dim shrink-0 text-[10px]">{t("dialogNote")}</span>
+          <code className="text-fg-muted truncate font-mono text-[10px]">
             src/content/custom-hooks/index.ts
           </code>
         </div>

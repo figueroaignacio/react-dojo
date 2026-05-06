@@ -1,17 +1,17 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { FeedbackWidget } from "@/components/feedback-widget"
+import { Switch } from "@/components/ui/switch"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import type { Quiz } from "@/content/quiz"
+import { useLocaleRouter } from "@/hooks/use-locale-router"
+import { useProgress } from "@/hooks/use-progress"
+import { TIMER_TICK_MS } from "@/lib/constants"
+import { cn } from "@/lib/utils"
 import confetti from "canvas-confetti"
 import { Timer } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { cn } from "@/lib/utils"
-import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
-import type { Quiz } from "@/content/quiz"
-import { useProgress } from "@/hooks/use-progress"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
-import { TIMER_TICK_MS } from "@/lib/constants"
-import { FeedbackWidget } from "@/components/feedback-widget"
+import { useEffect, useRef, useState } from "react"
 
 interface QuizPageProps {
   quiz: Quiz
@@ -199,11 +199,9 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
       <article className="mx-auto max-w-[1000px] px-5 py-10 md:px-12 md:py-20">
         <div className="mb-2 flex items-start justify-between gap-4">
           <div>
-            <p className="mb-1 text-[11px] tracking-[0.14em] text-[var(--color-fg-dim)] uppercase">
-              {t("quiz")}
-            </p>
+            <p className="text-fg-dim mb-1 text-[11px] tracking-[0.14em] uppercase">{t("quiz")}</p>
             <div className="flex items-center gap-3">
-              <h1 className="font-mono text-[28px] leading-none font-medium text-[var(--color-fg)]">
+              <h1 className="text-fg font-mono text-[28px] leading-none font-medium">
                 {quiz.label}
               </h1>
               {wasCompleted && (
@@ -243,8 +241,8 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
                         className={cn(
                           "grid h-7 w-7 place-items-center rounded-md transition-colors",
                           timerEnabled
-                            ? "bg-[var(--color-bg-hover)] text-[var(--color-fg)]"
-                            : "text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg)]"
+                            ? "bg-bg-hover text-fg"
+                            : "text-fg-muted hover:bg-bg-hover hover:text-fg"
                         )}
                       >
                         <Timer className="h-[15px] w-[15px]" strokeWidth={1.8} />
@@ -258,9 +256,9 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
               </TooltipProvider>
 
               {timerPickerOpen && (
-                <div className="absolute top-full right-0 z-50 mt-2 w-52 rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-raise)] p-3 shadow-lg">
+                <div className="border-line bg-bg-raise absolute top-full right-0 z-50 mt-2 w-52 rounded-lg border p-3 shadow-lg">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-[12px] text-[var(--color-fg-muted)]">{t("timer")}</span>
+                    <span className="text-fg-muted text-[12px]">{t("timer")}</span>
                     <Switch
                       checked={timerEnabled}
                       onCheckedChange={setTimerEnabled}
@@ -277,8 +275,8 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
                           className={cn(
                             "flex-1 rounded-md border py-1 font-mono text-[12px] transition-colors",
                             timerSeconds === s
-                              ? "border-[var(--color-fg)] text-[var(--color-fg)]"
-                              : "border-[var(--color-line)] text-[var(--color-fg-muted)] hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                              ? "border-fg text-fg"
+                              : "border-line text-fg-muted hover:border-fg-muted hover:text-fg"
                           )}
                         >
                           {s}s
@@ -290,15 +288,13 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
               )}
             </div>
 
-            <span className="font-mono text-[13px] text-[var(--color-fg-dim)] tabular-nums">
+            <span className="text-fg-dim font-mono text-[13px] tabular-nums">
               {t("questions", { count: total })}
             </span>
           </div>
         </div>
 
-        <p className="mt-4 mb-10 text-[15px] leading-[1.6] text-[var(--color-fg-muted)]">
-          {quiz.description}
-        </p>
+        <p className="text-fg-muted mt-4 mb-10 text-[15px] leading-[1.6]">{quiz.description}</p>
 
         <div className="space-y-2">
           {quiz.questions.map((q, i) => (
@@ -307,11 +303,11 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
               className={cn(
                 "flex items-baseline gap-4 rounded-lg border px-5 py-4 text-[14px] leading-[1.55]",
                 wasCompleted
-                  ? "border-green-500/15 bg-green-500/[0.03] text-[var(--color-fg-muted)]"
-                  : "border-[var(--color-line)] bg-[var(--color-bg-raise)] text-[var(--color-fg-muted)]"
+                  ? "text-fg-muted border-green-500/15 bg-green-500/3"
+                  : "border-line bg-bg-raise text-fg-muted"
               )}
             >
-              <span className="shrink-0 font-mono text-[11px] text-[var(--color-fg-faint)]">
+              <span className="text-fg-faint shrink-0 font-mono text-[11px]">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="flex-1">{q.question}</span>
@@ -337,19 +333,19 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
           ))}
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-[var(--color-line)] pt-8">
+        <div className="border-line mt-10 flex flex-wrap items-center gap-3 border-t pt-8">
           {wasCompleted ? (
             <>
               <button
                 onClick={restartAndStart}
-                className="rounded-md bg-[var(--color-fg)] px-5 py-2.5 text-[14px] font-medium text-[var(--color-bg)] transition-opacity hover:opacity-80"
+                className="bg-fg text-bg rounded-md px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80"
               >
                 {t("retry")}
               </button>
               {finished && (
                 <button
                   onClick={() => setBrowsing(false)}
-                  className="rounded-md border border-[var(--color-line)] px-4 py-2.5 text-[14px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                  className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2.5 text-[14px] transition-colors"
                 >
                   {t("viewResult")}
                 </button>
@@ -359,14 +355,14 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
             <>
               <button
                 onClick={startQuiz}
-                className="rounded-md bg-[var(--color-fg)] px-5 py-2.5 text-[14px] font-medium text-[var(--color-bg)] transition-opacity hover:opacity-80"
+                className="bg-fg text-bg rounded-md px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80"
               >
                 {t("start")}
               </button>
               {hasProgress && !finished && (
                 <button
                   onClick={() => setBrowsing(false)}
-                  className="rounded-md border border-[var(--color-line)] px-4 py-2.5 text-[14px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                  className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2.5 text-[14px] transition-colors"
                 >
                   {t("continue")}
                 </button>
@@ -392,40 +388,36 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
 
     return (
       <article className="mx-auto max-w-[1000px] px-5 py-10 md:px-12 md:py-20">
-        <div className="mb-4 text-[11px] tracking-[0.14em] text-[var(--color-fg-dim)] uppercase">
+        <div className="text-fg-dim mb-4 text-[11px] tracking-[0.14em] uppercase">
           {t("quiz")} · {quiz.label}
         </div>
-        <h1 className="font-mono text-[32px] leading-none font-medium text-[var(--color-fg)]">
-          {t("result")}
-        </h1>
+        <h1 className="text-fg font-mono text-[32px] leading-none font-medium">{t("result")}</h1>
 
-        <div className="mt-12 rounded-xl border border-[var(--color-line)] p-8 text-center">
-          <div className="font-mono text-[64px] leading-none font-medium text-[var(--color-fg)]">
+        <div className="border-line mt-12 rounded-xl border p-8 text-center">
+          <div className="text-fg font-mono text-[64px] leading-none font-medium">
             {score}/{total}
           </div>
-          <div className="mt-3 text-[15px] text-[var(--color-fg-muted)]">
+          <div className="text-fg-muted mt-3 text-[15px]">
             {pct >= 80 ? t("excellent") : pct >= 50 ? t("good") : t("keepPracticing")}
           </div>
 
-          <div className="mt-8 h-2 w-full overflow-hidden rounded-full bg-[var(--color-line)]">
+          <div className="bg-line mt-8 h-2 w-full overflow-hidden rounded-full">
             <div
-              className="h-full rounded-full bg-[var(--color-fg)] transition-all"
+              className="bg-fg h-full rounded-full transition-all"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <div className="mt-2 text-right font-mono text-[12px] text-[var(--color-fg-dim)]">
-            {pct}%
-          </div>
+          <div className="text-fg-dim mt-2 text-right font-mono text-[12px]">{pct}%</div>
 
-          <div className="mt-8 border-t border-[var(--color-line)] pt-6">
-            <p className="mb-3 text-[12px] text-[var(--color-fg-dim)]">{t("shareResult")}</p>
+          <div className="border-line mt-8 border-t pt-6">
+            <p className="text-fg-dim mb-3 text-[12px]">{t("shareResult")}</p>
             <div className="flex items-center justify-center gap-2">
               <a
                 href={links.x}
                 target="_blank"
                 rel="noreferrer"
                 title={t("shareOnX")}
-                className="flex items-center gap-2 rounded-md border border-[var(--color-line)] px-3 py-1.5 text-[12px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                className="border-line text-fg-muted hover:border-fg-muted hover:text-fg flex items-center gap-2 rounded-md border px-3 py-1.5 text-[12px] transition-colors"
               >
                 <XIcon />
                 <span>X</span>
@@ -435,7 +427,7 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
                 target="_blank"
                 rel="noreferrer"
                 title={t("shareOnLinkedIn")}
-                className="flex items-center gap-2 rounded-md border border-[var(--color-line)] px-3 py-1.5 text-[12px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                className="border-line text-fg-muted hover:border-fg-muted hover:text-fg flex items-center gap-2 rounded-md border px-3 py-1.5 text-[12px] transition-colors"
               >
                 <LinkedInIcon />
                 <span>LinkedIn</span>
@@ -445,7 +437,7 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
                 target="_blank"
                 rel="noreferrer"
                 title={t("shareOnWhatsApp")}
-                className="flex items-center gap-2 rounded-md border border-[var(--color-line)] px-3 py-1.5 text-[12px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                className="border-line text-fg-muted hover:border-fg-muted hover:text-fg flex items-center gap-2 rounded-md border px-3 py-1.5 text-[12px] transition-colors"
               >
                 <WhatsAppIcon />
                 <span>WhatsApp</span>
@@ -457,13 +449,13 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => setBrowsing(true)}
-            className="rounded-md border border-[var(--color-line)] px-4 py-2 text-[14px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+            className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2 text-[14px] transition-colors"
           >
             {t("viewQuestions")}
           </button>
           <button
             onClick={handleRestart}
-            className="rounded-md border border-[var(--color-line)] px-4 py-2 text-[14px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+            className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2 text-[14px] transition-colors"
           >
             {t("retry")}
           </button>
@@ -473,7 +465,7 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
               <button
                 key={q.id}
                 onClick={() => push(`/quiz/${q.id}`)}
-                className="rounded-md border border-[var(--color-line)] px-4 py-2 text-[14px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+                className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2 text-[14px] transition-colors"
               >
                 {q.label}
               </button>
@@ -487,33 +479,31 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
   return (
     <article className="mx-auto max-w-[1000px] px-5 py-10 md:px-12 md:py-20">
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-[11px] tracking-[0.14em] text-[var(--color-fg-dim)] uppercase">
+        <span className="text-fg-dim text-[11px] tracking-[0.14em] uppercase">
           {t("quiz")} · {quiz.label}
         </span>
         <div className="flex items-center gap-4">
           {timerEnabled && !answered && <TimerRing timeLeft={timeLeft} total={timerSeconds} />}
           <button
             onClick={() => setBrowsing(true)}
-            className="text-[11px] text-[var(--color-fg-faint)] transition-colors hover:text-[var(--color-fg-muted)]"
+            className="text-fg-faint hover:text-fg-muted text-[11px] transition-colors"
           >
             {t("viewQuestions")}
           </button>
-          <span className="font-mono text-[12px] text-[var(--color-fg-dim)]">
+          <span className="text-fg-dim font-mono text-[12px]">
             {currentIndex + 1} / {total}
           </span>
         </div>
       </div>
 
-      <div className="mb-10 h-[2px] w-full overflow-hidden rounded-full bg-[var(--color-line)]">
+      <div className="bg-line mb-10 h-[2px] w-full overflow-hidden rounded-full">
         <div
-          className="h-full rounded-full bg-[var(--color-fg)] transition-all duration-300"
+          className="bg-fg h-full rounded-full transition-all duration-300"
           style={{ width: `${((currentIndex + (answered ? 1 : 0)) / total) * 100}%` }}
         />
       </div>
 
-      <h2 className="text-[22px] leading-[1.4] font-medium text-[var(--color-fg)]">
-        {question.question}
-      </h2>
+      <h2 className="text-fg text-[22px] leading-[1.4] font-medium">{question.question}</h2>
 
       <ul className="mt-8 space-y-3">
         {question.options.map((option, i) => {
@@ -529,22 +519,16 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
                 onClick={() => handleSelect(i)}
                 disabled={answered}
                 className={cn(
-                  "w-full rounded-lg border px-5 py-4 text-left text-[14px] leading-[1.5] transition-colors",
+                  "w-full rounded-lg border px-5 py-4 text-left text-[14px] leading-normal transition-colors",
                   answered ? "cursor-default" : "cursor-pointer",
-                  !answered &&
-                    "border-[var(--color-line)] text-[var(--color-fg-muted)] hover:border-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
-                  state === "correct" &&
-                    "border-green-500/40 bg-green-500/5 text-[var(--color-fg)]",
-                  state === "revealed" &&
-                    "border-amber-500/40 bg-amber-500/5 text-[var(--color-fg-muted)]",
-                  state === "wrong" &&
-                    "border-red-500/40 bg-red-500/5 text-[var(--color-fg-muted)]",
-                  state === "unanswered" &&
-                    answered &&
-                    "border-[var(--color-line)] text-[var(--color-fg-faint)]"
+                  !answered && "border-line text-fg-muted hover:border-fg-muted hover:text-fg",
+                  state === "correct" && "text-fg border-green-500/40 bg-green-500/5",
+                  state === "revealed" && "text-fg-muted border-amber-500/40 bg-amber-500/5",
+                  state === "wrong" && "text-fg-muted border-red-500/40 bg-red-500/5",
+                  state === "unanswered" && answered && "text-fg-faint border-line"
                 )}
               >
-                <span className="mr-3 font-mono text-[12px] text-[var(--color-fg-dim)]">
+                <span className="text-fg-dim mr-3 font-mono text-[12px]">
                   {String.fromCharCode(65 + i)}.
                 </span>
                 {option}
@@ -555,24 +539,22 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
       </ul>
 
       {answered && (
-        <div className="mt-6 rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-raise)] px-5 py-4">
-          <div className="mb-1 text-[11px] tracking-[0.12em] text-[var(--color-fg-dim)] uppercase">
+        <div className="bg-bg-raise border-line mt-6 rounded-lg border px-5 py-4">
+          <div className="text-fg-dim mb-1 text-[11px] tracking-[0.12em] uppercase">
             {selected === -1
               ? t("timedOut")
               : selected === question.correctIndex
                 ? t("correct")
                 : t("incorrect")}
           </div>
-          <p className="text-[14px] leading-[1.65] text-[var(--color-fg-muted)]">
-            {question.explanation}
-          </p>
+          <p className="text-fg-muted text-[14px] leading-normal">{question.explanation}</p>
         </div>
       )}
 
       {answered && (
         <button
           onClick={handleNext}
-          className="mt-6 rounded-md bg-[var(--color-fg)] px-5 py-2.5 text-[14px] font-medium text-[var(--color-bg)] transition-opacity hover:opacity-80"
+          className="bg-fg text-bg mt-6 rounded-md px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80"
         >
           {currentIndex < total - 1 ? t("next") : t("viewResultFinal")}
         </button>
@@ -598,7 +580,7 @@ function TimerRing({ timeLeft, total }: { timeLeft: number; total: number }) {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-[var(--color-line)]"
+          className="text-line"
         />
         <circle
           cx="10"

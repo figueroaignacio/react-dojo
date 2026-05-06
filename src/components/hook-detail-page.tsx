@@ -1,15 +1,15 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
-import { ArrowLeft, Check, Copy } from "lucide-react"
-import { SandpackProvider, SandpackLayout, SandpackCodeEditor } from "@codesandbox/sandpack-react"
-import { useTranslations } from "next-intl"
-import { Playground, getSandpackTheme } from "@/components/playground"
 import { FeedbackWidget } from "@/components/feedback-widget"
+import { Playground, getSandpackTheme } from "@/components/playground"
+import type { CustomHook, HookCategory } from "@/content/custom-hooks"
+import { useEditorTheme } from "@/hooks/use-editor-theme"
 import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useTheme } from "@/hooks/use-theme"
-import { useEditorTheme } from "@/hooks/use-editor-theme"
-import type { CustomHook, HookCategory } from "@/content/custom-hooks"
+import { SandpackCodeEditor, SandpackLayout, SandpackProvider } from "@codesandbox/sandpack-react"
+import { ArrowLeft, Check, Copy } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useCallback, useMemo, useState } from "react"
 
 type Tab = "code" | "playground"
 
@@ -75,7 +75,7 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
       {/* Back nav */}
       <button
         onClick={() => push("/hooks")}
-        className="mb-8 flex cursor-pointer items-center gap-2 text-[12px] text-[var(--color-fg-dim)] transition-colors hover:text-[var(--color-fg)]"
+        className="text-fg-dim hover:text-fg mb-8 flex cursor-pointer items-center gap-2 text-[12px] transition-colors"
       >
         <ArrowLeft className="h-[13px] w-[13px]" strokeWidth={1.8} />
         {t("backToHooks")}
@@ -90,18 +90,14 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
             {hook.category}
           </span>
         </div>
-        <h1 className="font-mono text-[32px] leading-none font-medium text-[var(--color-fg)]">
-          {hook.label}
-        </h1>
-        <p className="mt-4 text-[17px] leading-[1.65] text-[var(--color-fg-muted)]">
-          {hook.description}
-        </p>
+        <h1 className="text-fg font-mono text-[32px] leading-none font-medium">{hook.label}</h1>
+        <p className="text-fg-muted mt-4 text-[17px] leading-[1.65]">{hook.description}</p>
       </div>
 
-      <hr className="border-t border-[var(--color-line)]" />
+      <hr className="border-line border-t" />
 
       {/* Tabs */}
-      <div className="flex gap-0 border-b border-[var(--color-line)]">
+      <div className="border-line flex gap-0 border-b">
         <TabButton active={tab === "code"} onClick={() => setTab("code")}>
           {t("tabCode")}
         </TabButton>
@@ -114,11 +110,11 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
         {/* Code tab */}
         {tab === "code" && (
           <div>
-            <div className="mb-1.5 flex items-center justify-between text-[11px] text-[var(--color-fg-dim)]">
+            <div className="text-fg-dim mb-1.5 flex items-center justify-between text-[11px]">
               <span className="font-mono">{hook.label}.ts</span>
               <button
                 onClick={handleCopy}
-                className="flex cursor-pointer items-center gap-1.5 text-[11px] text-[var(--color-fg-dim)] transition-colors hover:text-[var(--color-fg)]"
+                className="text-fg-dim hover:text-fg flex cursor-pointer items-center gap-1.5 text-[11px] transition-colors"
               >
                 {copied ? (
                   <Check className="h-[12px] w-[12px] text-emerald-400" strokeWidth={2} />
@@ -141,7 +137,7 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
       <FeedbackWidget contentType="hook" contentId={hook.id} />
 
       {/* Prev / Next navigation */}
-      <nav className="mt-12 flex items-start justify-between gap-8 border-t border-[var(--color-line)] pt-8 text-[14px]">
+      <nav className="border-line mt-12 flex items-start justify-between gap-8 border-t pt-8 text-[14px]">
         {prev ? (
           <a
             href={href(`/hooks/${prev.id}`)}
@@ -149,10 +145,10 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
               e.preventDefault()
               push(`/hooks/${prev.id}`)
             }}
-            className="flex flex-col gap-1 text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+            className="text-fg-muted hover:text-fg flex flex-col gap-1 transition-colors"
           >
-            <span className="text-[12px] text-[var(--color-fg-dim)]">{t("prev")}</span>
-            <span className="font-mono text-[var(--color-fg)]">{prev.label}</span>
+            <span className="text-fg-dim text-[12px]">{t("prev")}</span>
+            <span className="text-fg font-mono">{prev.label}</span>
           </a>
         ) : (
           <span />
@@ -164,10 +160,10 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
               e.preventDefault()
               push(`/hooks/${next.id}`)
             }}
-            className="flex flex-col items-end gap-1 text-right text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+            className="text-fg-muted hover:text-fg flex flex-col items-end gap-1 text-right transition-colors"
           >
-            <span className="text-[12px] text-[var(--color-fg-dim)]">{t("next")}</span>
-            <span className="font-mono text-[var(--color-fg)]">{next.label}</span>
+            <span className="text-fg-dim text-[12px]">{t("next")}</span>
+            <span className="text-fg font-mono">{next.label}</span>
           </a>
         ) : (
           <span />
@@ -191,9 +187,7 @@ function TabButton({
       onClick={onClick}
       className={[
         "cursor-pointer border-b-2 px-4 py-2.5 font-mono text-[12px] transition-colors",
-        active
-          ? "border-[var(--color-fg)] text-[var(--color-fg)]"
-          : "border-transparent text-[var(--color-fg-dim)] hover:text-[var(--color-fg-muted)]",
+        active ? "border-fg text-fg" : "text-fg-dim hover:text-fg-muted border-transparent",
       ].join(" ")}
     >
       {children}

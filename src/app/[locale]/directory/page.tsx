@@ -1,9 +1,12 @@
 import { GitHubSignInButton } from "@/components/github-sign-in-button"
 import { KyuInfoButton } from "@/components/kyu-info-button"
 import { getContentForLocale } from "@/content/loader"
+import { db } from "@/db"
+import { user, userProgress } from "@/db/schema"
 import type { Locale } from "@/i18n/routing"
 import { auth } from "@/lib/auth"
 import { calculateScore, getRank } from "@/lib/ranking"
+import { eq } from "drizzle-orm"
 import { Crown } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { headers } from "next/headers"
@@ -20,10 +23,27 @@ interface Developer {
 }
 
 async function getUsers(): Promise<Developer[]> {
-  const baseUrl = process.env.BETTER_AUTH_URL ?? "http://localhost:3000"
-  const res = await fetch(`${baseUrl}/api/users`, { cache: "no-store", headers: await headers() })
-  if (!res.ok) return []
-  return res.json()
+  const users = await db
+    .select({ id: user.id, name: user.name, image: user.image, createdAt: user.createdAt })
+    .from(user)
+
+  const withProgress = await Promise.all(
+    users.map(async (u) => {
+      const progress = await db.query.userProgress.findFirst({
+        where: eq(userProgress.userId, u.id),
+      })
+      return {
+        ...u,
+        concepts: progress?.visitedConcepts.length ?? 0,
+        exercises: progress?.completedExercises.length ?? 0,
+        quizzes: Object.keys(progress?.quizScores ?? {}).length,
+      }
+    })
+  )
+
+  return withProgress.sort(
+    (a, b) => b.concepts + b.exercises + b.quizzes - (a.concepts + a.exercises + a.quizzes)
+  )
 }
 
 function formatDate(dateStr: string) {

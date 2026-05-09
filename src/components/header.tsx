@@ -8,14 +8,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useCountUp } from "@/hooks/use-count-up"
 import { useEditorTheme } from "@/hooks/use-editor-theme"
 import { useGitHubStars } from "@/hooks/use-github-stars"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTheme } from "@/hooks/use-theme"
+import { Link } from "@/i18n/navigation"
 import { DISCORD_URL, EDITOR_THEMES_META, REPOSITORY, STARS_KILO_THRESHOLD } from "@/lib/constants"
 import { type EditorThemeId } from "@/types"
 import { Keyboard, Search, Star } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 import { useRef, useState } from "react"
 import { DiscordIcon, MoonIcon, PaletteIcon, SunIcon } from "./svg-icons"
 
@@ -33,7 +32,6 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
   const animatedStars = useCountUp(stars, animate)
   const [pickerOpen, setPickerOpen] = useState(false)
   const pickerRef = useRef<HTMLDivElement>(null)
-  const { href } = useLocaleRouter()
 
   const handlePickerBlur = (e: React.FocusEvent) => {
     if (!pickerRef.current?.contains(e.relatedTarget as Node)) {
@@ -53,7 +51,7 @@ export function Header({ onSearchOpen, onShortcutsOpen }: HeaderProps) {
         <div className="flex items-center gap-2">
           <SidebarTrigger className="text-fg-muted hover:bg-bg-hover hover:text-fg md:hidden" />
           <Link
-            href={href("/")}
+            href="/"
             className="text-fg hover:text-fg-muted flex items-center gap-2 text-[14px] transition-colors"
           >
             <Logo className="h-[28px] w-auto" />

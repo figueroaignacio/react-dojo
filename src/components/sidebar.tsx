@@ -5,11 +5,11 @@ import { Sidebar as ShadcnSidebar, SidebarContent, SidebarFooter } from "@/compo
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { type Difficulty } from "@/content/exercises"
 import { type QuizDifficulty } from "@/content/quiz"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useProgress } from "@/hooks/use-progress"
+import { usePathname, useRouter } from "@/i18n/navigation"
 import { authClient, useSession } from "@/lib/auth-client"
-import { cn } from "@/lib/utils"
 import { type SidebarOpenState, writeSidebarOpenStateCookie } from "@/lib/sidebar-state"
+import { cn } from "@/lib/utils"
 import { useContent } from "@/providers/content-provider"
 import {
   Anchor,
@@ -26,7 +26,6 @@ import {
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 import type { ComponentType } from "react"
 import { useEffect, useState } from "react"
 
@@ -141,8 +140,9 @@ interface SidebarProps {
 
 export function Sidebar({ initialState }: SidebarProps) {
   const t = useTranslations("Sidebar")
+  const router = useRouter()
   const pathname = usePathname()
-  const { locale, push } = useLocaleRouter()
+
   const { allConcepts, categories, conceptIndex, allExercises, allQuizzes } = useContent()
   const { visitedConcepts, completedExercises, quizScores } = useProgress()
   const { data: session } = useSession()
@@ -153,14 +153,7 @@ export function Sidebar({ initialState }: SidebarProps) {
     advanced: t("advanced"),
   }
 
-  // Strip locale prefix so active-state comparisons work under /en/... and /es/...
-  const rawPath = pathname.slice(1)
-  const current =
-    rawPath === locale
-      ? ""
-      : rawPath.startsWith(`${locale}/`)
-        ? rawPath.slice(locale.length + 1)
-        : rawPath
+  const current = pathname === "/" ? "" : pathname.slice(1)
 
   const isExerciseRoute = current.startsWith("learn/")
   const isQuizRoute = current.startsWith("quiz/")
@@ -188,11 +181,13 @@ export function Sidebar({ initialState }: SidebarProps) {
     if (activeCatId) cats.add(activeCatId)
     return cats
   })
+
   const [openLevels, setOpenLevels] = useState<Set<string>>(() => {
     const levels = new Set<string>(initialState.levels)
     if (activeDifficulty) levels.add(activeDifficulty)
     return levels
   })
+
   const [openQuizLevels, setOpenQuizLevels] = useState<Set<string>>(() => {
     const quizLevels = new Set<string>(initialState.quizLevels)
     if (activeQuizDifficulty) quizLevels.add(activeQuizDifficulty)
@@ -278,14 +273,12 @@ export function Sidebar({ initialState }: SidebarProps) {
           >
             {t("concepts")}
           </SectionLabel>
-
           <div className="px-2">
             {categories.map((cat) => {
               const Icon = categoryIcon[cat.id]
               const isOpen = openCats.has(cat.id)
               const visited = cat.conceptIds.filter((id) => visitedConcepts.has(id)).length
               const total = cat.conceptIds.length
-
               const allDone = total > 0 && visited === total
               return (
                 <div key={cat.id}>
@@ -326,7 +319,6 @@ export function Sidebar({ initialState }: SidebarProps) {
                       }}
                     />
                   </button>
-
                   <div
                     style={{
                       display: "grid",
@@ -346,7 +338,7 @@ export function Sidebar({ initialState }: SidebarProps) {
                               key={id}
                               label={concept.label}
                               active={active}
-                              onClick={() => push(`/${id}`)}
+                              onClick={() => router.push(`/${id}`)}
                               indicator={
                                 seen ? (
                                   <Check
@@ -365,7 +357,6 @@ export function Sidebar({ initialState }: SidebarProps) {
               )
             })}
           </div>
-
           {/* ── PRACTICE ──────────────────────── */}
           <div className="via-sidebar-border/80 mx-4 mt-3 h-px bg-linear-to-r from-transparent to-transparent" />
           <SectionLabel
@@ -382,7 +373,6 @@ export function Sidebar({ initialState }: SidebarProps) {
           >
             {t("practice")}
           </SectionLabel>
-
           <div className="px-2">
             {(["basic", "intermediate", "advanced"] as const).map((level) => {
               const exs = allExercises.filter((e) => e.difficulty === level)
@@ -436,7 +426,7 @@ export function Sidebar({ initialState }: SidebarProps) {
                               key={ex.id}
                               label={ex.label}
                               active={active}
-                              onClick={() => push(`/learn/${ex.id}`)}
+                              onClick={() => router.push(`/learn/${ex.id}`)}
                               indicator={
                                 completed ? (
                                   <Check
@@ -455,7 +445,6 @@ export function Sidebar({ initialState }: SidebarProps) {
               )
             })}
           </div>
-
           {/* ── QUIZ ──────────────────────────── */}
           <div className="via-sidebar-border/80 mx-4 mt-3 h-px bg-linear-to-r from-transparent to-transparent" />
           <SectionLabel
@@ -472,7 +461,6 @@ export function Sidebar({ initialState }: SidebarProps) {
           >
             {t("quiz")}
           </SectionLabel>
-
           <div className="px-2">
             {(["basic", "intermediate", "advanced"] as const).map((level) => {
               const quizzes = allQuizzes.filter((q) => q.difficulty === level)
@@ -525,7 +513,7 @@ export function Sidebar({ initialState }: SidebarProps) {
                               key={quiz.id}
                               label={quiz.label}
                               active={active}
-                              onClick={() => push(`/quiz/${quiz.id}`)}
+                              onClick={() => router.push(`/quiz/${quiz.id}`)}
                               badge={quiz.questions.length}
                             />
                           )
@@ -538,12 +526,11 @@ export function Sidebar({ initialState }: SidebarProps) {
             })}
           </div>
         </SidebarContent>
-
         <SidebarFooter className="gap-2 p-3 pb-3">
           <div className="flex flex-col gap-0.5">
             <button
               type="button"
-              onClick={() => push("/hooks")}
+              onClick={() => router.push("/hooks")}
               className={cn(
                 "group/beta relative flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors",
                 isHooksRoute
@@ -574,7 +561,7 @@ export function Sidebar({ initialState }: SidebarProps) {
             </button>
             <button
               type="button"
-              onClick={() => push("/directory")}
+              onClick={() => router.push("/directory")}
               className={cn(
                 "group/dir relative flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors",
                 isDirectoryRoute
@@ -636,7 +623,7 @@ export function Sidebar({ initialState }: SidebarProps) {
                   onClick={async () => {
                     await authClient.signOut()
                     if (current.startsWith("directory")) {
-                      push("/")
+                      router.push("/")
                     }
                   }}
                 >

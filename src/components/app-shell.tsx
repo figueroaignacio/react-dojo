@@ -1,15 +1,15 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
-import { Header } from "@/components/header"
+import { BreadcrumbBar } from "@/components/breadcrumb-bar"
 import { Footer } from "@/components/footer"
-import { Sidebar } from "@/components/sidebar"
+import { Header } from "@/components/header"
 import { SearchModal } from "@/components/search-modal"
 import { ShortcutsModal } from "@/components/shortcuts-modal"
-import { BreadcrumbBar } from "@/components/breadcrumb-bar"
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import { Sidebar } from "@/components/sidebar"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { usePathname } from "@/i18n/navigation"
 import type { SidebarOpenState } from "@/lib/sidebar-state"
+import { useEffect, useState } from "react"
 
 interface AppShellProps {
   children: React.ReactNode

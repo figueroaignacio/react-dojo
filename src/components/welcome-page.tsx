@@ -4,8 +4,8 @@ import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useProgress } from "@/hooks/use-progress"
+import { useRouter } from "@/i18n/navigation"
 import { useContent } from "@/providers/content-provider"
 import { ArrowRight, Dumbbell, Shuffle } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -13,7 +13,7 @@ import { useEffect, useState } from "react"
 
 export function WelcomePage() {
   const t = useTranslations("WelcomePage")
-  const { push } = useLocaleRouter()
+  const router = useRouter()
   const { allConcepts, allExercises, allQuizzes, categories } = useContent()
   const { visitedConcepts, completedExercises, quizScores, resetProgress } = useProgress()
   const [resetOpen, setResetOpen] = useState(false)
@@ -23,11 +23,11 @@ export function WelcomePage() {
   const continueTarget = firstUnvisited ?? allConcepts[0]
   const quizzesAttempted = Object.keys(quizScores).length
 
-  const goContinue = () => push(`/${continueTarget.id}`)
-  const goPractice = () => push(`/learn/${allExercises[0].id}`)
+  const goContinue = () => router.push(`/${continueTarget.id}`)
+  const goPractice = () => router.push(`/learn/${allExercises[0].id}`)
   const goSurprise = () => {
     const random = allConcepts[Math.floor(Math.random() * allConcepts.length)]
-    push(`/${random.id}`)
+    router.push(`/${random.id}`)
   }
 
   const handleReset = () => {
@@ -47,28 +47,25 @@ export function WelcomePage() {
       }
       if (e.key === " ") {
         e.preventDefault()
-        push(`/${continueTarget.id}`)
+        router.push(`/${continueTarget.id}`)
       }
-      if (e.key === "p" || e.key === "P") push(`/learn/${allExercises[0].id}`)
+      if (e.key === "p" || e.key === "P") router.push(`/learn/${allExercises[0].id}`)
       if (e.key === "s" || e.key === "S") {
         const random = allConcepts[Math.floor(Math.random() * allConcepts.length)]
-        push(`/${random.id}`)
+        router.push(`/${random.id}`)
       }
-      if (e.key === "ArrowRight") push(`/${allConcepts[0].id}`)
+      if (e.key === "ArrowRight") router.push(`/${allConcepts[0].id}`)
     }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
-  }, [allConcepts, allExercises, continueTarget, push])
+  }, [allConcepts, allExercises, continueTarget, router])
 
   return (
     <div className="flex min-h-[calc(100vh-84px)] items-center justify-center px-8 py-20">
       <div className="flex max-w-[420px] flex-col items-center text-center">
         <Logo className="mb-6 h-24 w-auto" />
-
         <h1 className="text-fg font-mono text-[30px] leading-none font-medium">React Dojo</h1>
-
         <p className="text-fg-muted mt-4 text-[16px] leading-[1.7]">{t("tagline")}</p>
-
         <div className="text-fg-dim mt-6 flex items-center gap-4 text-[12px]">
           {hasProgress ? (
             <>
@@ -100,7 +97,6 @@ export function WelcomePage() {
             </>
           )}
         </div>
-
         <div className="mt-8 flex flex-col items-center gap-3">
           <div className="flex flex-wrap justify-center gap-3">
             <Button onClick={goContinue} className="bg-fg text-bg gap-2 border-0 hover:opacity-80">
@@ -124,7 +120,6 @@ export function WelcomePage() {
               {t("surprise")}
             </Button>
           </div>
-
           {hasProgress && (
             <button
               type="button"
@@ -136,7 +131,6 @@ export function WelcomePage() {
           )}
         </div>
       </div>
-
       <Dialog open={resetOpen} onOpenChange={(o) => !o && setResetOpen(false)}>
         <DialogContent className="border-line-strong bg-bg-raise max-w-sm p-0">
           <DialogHeader className="border-line border-b px-5 py-4">

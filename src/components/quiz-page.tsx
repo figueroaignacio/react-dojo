@@ -4,8 +4,8 @@ import { FeedbackWidget } from "@/components/feedback-widget"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import type { Quiz } from "@/content/quiz"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useProgress } from "@/hooks/use-progress"
+import { useRouter } from "@/i18n/navigation"
 import { TIMER_TICK_MS } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import confetti from "canvas-confetti"
@@ -67,7 +67,7 @@ function playTick(ctx: AudioContext, urgent: boolean) {
 
 export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
   const t = useTranslations("QuizPage")
-  const { push } = useLocaleRouter()
+  const router = useRouter()
   const [browsing, setBrowsing] = useState(true)
   const [session, setSession] = useState<QuizSession>(DEFAULT_SESSION)
   const wasFinishedOnMount = useRef(false)
@@ -464,7 +464,7 @@ export function QuizPage({ quiz, allQuizzes }: QuizPageProps) {
             .map((q) => (
               <button
                 key={q.id}
-                onClick={() => push(`/quiz/${q.id}`)}
+                onClick={() => router.push(`/quiz/${q.id}`)}
                 className="border-line text-fg-muted hover:border-fg-muted hover:text-fg rounded-md border px-4 py-2 text-[14px] transition-colors"
               >
                 {q.label}

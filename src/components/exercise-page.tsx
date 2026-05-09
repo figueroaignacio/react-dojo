@@ -3,13 +3,13 @@
 import { FeedbackWidget } from "@/components/feedback-widget"
 import { Playground } from "@/components/playground"
 import type { Difficulty, Exercise } from "@/content/exercises"
-import { useKeyboardNav } from "@/hooks/use-keyboard-nav"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useCodePersistence } from "@/hooks/use-code-persistence"
+import { useKeyboardNav } from "@/hooks/use-keyboard-nav"
 import { useProgress } from "@/hooks/use-progress"
+import { Link } from "@/i18n/navigation"
+import { renderObjective } from "@/lib/render-objective"
 import { cn } from "@/lib/utils"
 import { useContent } from "@/providers/content-provider"
-import { renderObjective } from "@/lib/render-objective"
 import { BookOpen, CheckCircle2, Circle, Lightbulb } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
@@ -37,7 +37,6 @@ const difficultyKey: Record<
 
 export function ExercisePage({ exercise, prev, next }: ExercisePageProps) {
   const t = useTranslations("ExercisePage")
-  const { push, href, locale } = useLocaleRouter()
   const [showSolution, setShowSolution] = useState(false)
   const [resetCount, setResetCount] = useState(0)
   const { completedExercises, toggleExerciseCompleted } = useProgress()
@@ -135,7 +134,7 @@ export function ExercisePage({ exercise, prev, next }: ExercisePageProps) {
             />
           ) : (
             <Playground
-              key={`${locale}-${exercise.id}-start-${resetCount}`}
+              key={`${exercise.id}-start-${resetCount}`}
               files={exercise.starter}
               dependencies={exercise.dependencies}
               exerciseId={exercise.id}
@@ -168,17 +167,13 @@ export function ExercisePage({ exercise, prev, next }: ExercisePageProps) {
           </h3>
           <div className="flex flex-wrap gap-2">
             {exercise.relatedConcepts.map((id) => (
-              <a
+              <Link
                 key={id}
-                href={href(`/${id}`)}
-                onClick={(e) => {
-                  e.preventDefault()
-                  push(`/${id}`)
-                }}
+                href={`/${id}`}
                 className="border-line text-fg-muted hover:border-line-strong hover:text-fg inline-block rounded border px-3 py-1 font-mono text-[13px] transition-colors"
               >
                 {id}
-              </a>
+              </Link>
             ))}
           </div>
         </section>
@@ -188,32 +183,24 @@ export function ExercisePage({ exercise, prev, next }: ExercisePageProps) {
 
       <nav className="border-line mt-12 flex items-start justify-between gap-8 border-t pt-8 text-[14px]">
         {prev ? (
-          <a
-            href={href(`/learn/${prev.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/learn/${prev.id}`)
-            }}
+          <Link
+            href={`/learn/${prev.id}`}
             className="group text-fg-muted hover:text-fg flex flex-col gap-1 transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("prev")}</span>
             <span className="text-fg">{prev.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}
         {next ? (
-          <a
-            href={href(`/learn/${next.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/learn/${next.id}`)
-            }}
+          <Link
+            href={`/learn/${next.id}`}
             className="group text-fg-muted hover:text-fg flex flex-col items-end gap-1 text-right transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("next")}</span>
             <span className="text-fg">{next.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}

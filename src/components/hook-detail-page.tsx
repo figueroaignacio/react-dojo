@@ -5,8 +5,8 @@ import { Playground, getSandpackTheme } from "@/components/playground"
 import type { CustomHook, HookCategory } from "@/content/custom-hooks"
 import { useEditorTheme } from "@/hooks/use-editor-theme"
 import { useKeyboardNav } from "@/hooks/use-keyboard-nav"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useTheme } from "@/hooks/use-theme"
+import { Link, useRouter } from "@/i18n/navigation"
 import { SandpackCodeEditor, SandpackLayout, SandpackProvider } from "@codesandbox/sandpack-react"
 import { ArrowLeft, Check, Copy } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -61,9 +61,9 @@ function CodeViewer({ code, hookId }: { code: string; hookId: string }) {
 
 export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
   const t = useTranslations("CustomHooks")
-  const { push, href } = useLocaleRouter()
   const [tab, setTab] = useState<Tab>("code")
   const [copied, setCopied] = useState(false)
+  const router = useRouter()
 
   useKeyboardNav({
     prev: prev && `/hooks/${prev.id}`,
@@ -80,7 +80,7 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
     <article className="mx-auto max-w-[1000px] px-5 py-10 md:px-12 md:py-20">
       {/* Back nav */}
       <button
-        onClick={() => push("/hooks")}
+        onClick={() => router.push("/hooks")}
         className="text-fg-dim hover:text-fg mb-8 flex cursor-pointer items-center gap-2 text-[12px] transition-colors"
       >
         <ArrowLeft className="h-[13px] w-[13px]" strokeWidth={1.8} />
@@ -145,32 +145,24 @@ export function HookDetailPage({ hook, prev, next }: HookDetailPageProps) {
       {/* Prev / Next navigation */}
       <nav className="border-line mt-12 flex items-start justify-between gap-8 border-t pt-8 text-[14px]">
         {prev ? (
-          <a
-            href={href(`/hooks/${prev.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/hooks/${prev.id}`)
-            }}
+          <Link
+            href={`/hooks/${prev.id}`}
             className="text-fg-muted hover:text-fg flex flex-col gap-1 transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("prev")}</span>
             <span className="text-fg font-mono">{prev.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}
         {next ? (
-          <a
-            href={href(`/hooks/${next.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/hooks/${next.id}`)
-            }}
+          <Link
+            href={`/hooks/${next.id}`}
             className="text-fg-muted hover:text-fg flex flex-col items-end gap-1 text-right transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("next")}</span>
             <span className="text-fg font-mono">{next.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}

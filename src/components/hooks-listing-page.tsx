@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import type { CustomHook, HookCategory } from "@/content/custom-hooks"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
+import { Link } from "@/i18n/navigation"
 import { REPOSITORY } from "@/lib/constants"
 import { ExternalLink, GitBranch, GitFork, Plus, Star } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -29,7 +29,6 @@ interface HooksListingPageProps {
 
 export function HooksListingPage({ hooks }: HooksListingPageProps) {
   const t = useTranslations("CustomHooks")
-  const { push } = useLocaleRouter()
   const [activeCategory, setActiveCategory] = useState<HookCategory | "all">("all")
   const [addOpen, setAddOpen] = useState(false)
 
@@ -81,9 +80,9 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
       {/* Hook cards grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((hook) => (
-          <button
+          <Link
             key={hook.id}
-            onClick={() => push(`/hooks/${hook.id}`)}
+            href={`/hooks/${hook.id}`}
             className="border-line hover:border-fg-strong bg-bg flex cursor-pointer flex-col gap-3 rounded-lg border p-5 text-left transition-all hover:shadow-sm"
           >
             <div className="flex items-center justify-between">
@@ -102,7 +101,7 @@ export function HooksListingPage({ hooks }: HooksListingPageProps) {
             <span className="text-fg-dim group-hover:text-fg-muted mt-auto text-[11px] transition-colors">
               {t("viewHook")} →
             </span>
-          </button>
+          </Link>
         ))}
       </div>
 

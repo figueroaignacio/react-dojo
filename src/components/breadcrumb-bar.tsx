@@ -1,5 +1,4 @@
 "use client"
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,43 +7,30 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
-import { routing } from "@/i18n/routing"
+import { Link, usePathname } from "@/i18n/navigation"
 import { useContent } from "@/providers/content-provider"
-import { usePathname } from "next/navigation"
-
-function stripLocale(pathname: string) {
-  for (const locale of routing.locales) {
-    if (pathname === `/${locale}`) return "/"
-    if (pathname.startsWith(`/${locale}/`)) return pathname.slice(locale.length + 1)
-  }
-  return pathname
-}
 
 export function BreadcrumbBar() {
   const pathname = usePathname()
-  const { push, href } = useLocaleRouter()
   const { allConcepts, allExercises, allQuizzes, categories } = useContent()
-
-  const path = stripLocale(pathname)
 
   let items: { label: string; href?: string }[] = []
 
-  if (path.startsWith("/learn/")) {
-    const id = path.replace("/learn/", "")
+  if (pathname.startsWith("/learn/")) {
+    const id = pathname.replace("/learn/", "")
     const exercise = allExercises.find((e) => e.id === id)
     if (!exercise) return null
     items = [
       { label: "Practice", href: `/learn/${allExercises[0]?.id}` },
       { label: exercise.label },
     ]
-  } else if (path.startsWith("/quiz/")) {
-    const id = path.replace("/quiz/", "")
+  } else if (pathname.startsWith("/quiz/")) {
+    const id = pathname.replace("/quiz/", "")
     const quiz = allQuizzes.find((q) => q.id === id)
     if (!quiz) return null
     items = [{ label: "Quiz" }, { label: quiz.label }]
-  } else if (path !== "/" && path !== "") {
-    const id = path.replace("/", "")
+  } else if (pathname !== "/" && pathname !== "") {
+    const id = pathname.replace("/", "")
     const concept = allConcepts.find((c) => c.id === id)
     if (!concept) return null
     const category = categories.find((c) => c.conceptIds.includes(concept.id))
@@ -63,17 +49,7 @@ export function BreadcrumbBar() {
               <BreadcrumbItem>
                 {item.href ? (
                   <BreadcrumbLink
-                    render={
-                      <a
-                        href={href(item.href)}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          push(item.href!)
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                    }
+                    render={<Link href={item.href}>{item.label}</Link>}
                     className="text-fg-faint hover:text-fg-muted transition-colors"
                   />
                 ) : (

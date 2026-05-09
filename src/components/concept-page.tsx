@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { type Concept } from "@/content/concepts"
 import { useKeyboardNav } from "@/hooks/use-keyboard-nav"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 import { useProgress } from "@/hooks/use-progress"
+import { Link } from "@/i18n/navigation"
 import { useContent } from "@/providers/content-provider"
 import { TriangleAlert } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -20,7 +20,6 @@ interface ConceptPageProps {
 
 export function ConceptPage({ concept, prev, next }: ConceptPageProps) {
   const t = useTranslations("ConceptPage")
-  const { push, href } = useLocaleRouter()
   const { markConceptVisited } = useProgress()
   const { allExercises } = useContent()
   const bottomRef = useRef<HTMLElement>(null)
@@ -106,32 +105,24 @@ export function ConceptPage({ concept, prev, next }: ConceptPageProps) {
         className="border-line mt-12 flex items-start justify-between gap-8 border-t pt-8 text-[14px]"
       >
         {prev ? (
-          <a
-            href={href(`/${prev.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/${prev.id}`)
-            }}
+          <Link
+            href={`/${prev.id}`}
             className="group text-fg-muted hover:text-fg flex flex-col gap-1 transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("prev")}</span>
             <span className="text-fg font-mono">{prev.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}
         {next ? (
-          <a
-            href={href(`/${next.id}`)}
-            onClick={(e) => {
-              e.preventDefault()
-              push(`/${next.id}`)
-            }}
+          <Link
+            href={`/${next.id}`}
             className="group text-fg-muted hover:text-fg flex flex-col items-end gap-1 text-right transition-colors"
           >
             <span className="text-fg-dim text-[12px]">{t("next")}</span>
             <span className="text-fg font-mono">{next.label}</span>
-          </a>
+          </Link>
         ) : (
           <span />
         )}

@@ -2,10 +2,10 @@
 
 import { Separator } from "@/components/ui/separator"
 import { useProgress } from "@/hooks/use-progress"
+import { Link } from "@/i18n/navigation"
 import { useContent } from "@/providers/content-provider"
 import { Bug, Heart } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 import { GitHubIcon, ReactIcon } from "./svg-icons"
 
 export function Footer() {

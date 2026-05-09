@@ -1,7 +1,5 @@
 "use client"
 
-import { Heart, Server, Database, Globe } from "lucide-react"
-import { useTranslations } from "next-intl"
 import {
   Dialog,
   DialogContent,
@@ -10,10 +8,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { PAYPAL_URL, KOFI_URL } from "@/lib/constants"
-import { PayPalIcon } from "./svg-icons"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
+import { KOFI_URL, PAYPAL_URL } from "@/lib/constants"
+import { Database, Globe, Heart, Server } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
+import { PayPalIcon } from "./svg-icons"
 
 const costs = [
   { icon: Database, key: "costDatabase" as const },

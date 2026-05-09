@@ -1,6 +1,6 @@
+import { Link } from "@/i18n/navigation"
 import { ArrowLeft } from "lucide-react"
 import { getLocale, getTranslations } from "next-intl/server"
-import Link from "next/link"
 
 export default async function NotFound() {
   const t = await getTranslations("NotFound")

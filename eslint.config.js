@@ -1,11 +1,11 @@
 import js from "@eslint/js"
-import globals from "globals"
-import reactHooks from "eslint-plugin-react-hooks"
-import reactRefresh from "eslint-plugin-react-refresh"
-import tseslint from "typescript-eslint"
-import { defineConfig, globalIgnores } from "eslint/config"
 import eslintConfigPrettier from "eslint-config-prettier"
 import jsxA11y from "eslint-plugin-jsx-a11y"
+import reactHooks from "eslint-plugin-react-hooks"
+import reactRefresh from "eslint-plugin-react-refresh"
+import { defineConfig, globalIgnores } from "eslint/config"
+import globals from "globals"
+import tseslint from "typescript-eslint"
 
 import preferExportFunction from "./src/rules/prefer-export-function.js"
 
@@ -46,6 +46,22 @@ export default defineConfig([
         },
       ],
       "local-rules/prefer-export-function": "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "next/link",
+              message: "Use Link from '@/i18n/navigation' instead.",
+            },
+            {
+              name: "next/navigation",
+              importNames: ["useRouter", "usePathname", "redirect"],
+              message: "Use useRouter, usePathname or redirect from '@/i18n/navigation' instead.",
+            },
+          ],
+        },
+      ],
     },
   },
 ])

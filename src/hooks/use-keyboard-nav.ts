@@ -1,5 +1,5 @@
+import { useRouter } from "@/i18n/navigation"
 import { useEffect } from "react"
-import { useLocaleRouter } from "@/hooks/use-locale-router"
 
 interface UseKeyboardNavOptions {
   prev?: string
@@ -11,7 +11,7 @@ interface UseKeyboardNavOptions {
 const INTERACTIVE_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"])
 
 export function useKeyboardNav({ prev, next, prevFallback, nextFallback }: UseKeyboardNavOptions) {
-  const { push } = useLocaleRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -21,11 +21,11 @@ export function useKeyboardNav({ prev, next, prevFallback, nextFallback }: UseKe
 
       const prevRoute = prev ?? prevFallback
       const nextRoute = next ?? nextFallback
-      if (e.key === "ArrowLeft" && prevRoute) push(prevRoute)
-      if (e.key === "ArrowRight" && nextRoute) push(nextRoute)
+      if (e.key === "ArrowLeft" && prevRoute) router.push(prevRoute)
+      if (e.key === "ArrowRight" && nextRoute) router.push(nextRoute)
     }
 
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
-  }, [prev, next, prevFallback, nextFallback, push])
+  }, [prev, next, prevFallback, nextFallback, router])
 }
